@@ -1,13 +1,16 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
+import { Alert } from "react-bootstrap";
 
 const Signup = () => {
     const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmationRef = useRef();
+
+    const [errors, setErrors] = useState(null);
 
     const { setUser, setToken } = useStateContext();
 
@@ -38,16 +41,18 @@ const Signup = () => {
             })
 
             .catch(err => {
-                // const response = error.response;
+                const response = err.response;
                 console.log(err);
-                // if (response && response.status === 422) {
-                //     console.log(response.data.errors);
-                // }
+                if (response && response.status == 422) {
+                    console.log(response.data.errors);
+                    setErrors(response.data.errors);
+                }
             })
     }
     return (
         <div className="Auth-form-container">
             <form className="Auth-form" onSubmit={onSubmit}>
+
                 <div className="Auth-form-content">
                     <h3 className="Auth-form-title">Sign In</h3>
                     <div className="text-center">
@@ -55,8 +60,17 @@ const Signup = () => {
                         {/* <span className="link-primary">
                             Sign In
                         </span> */}
+
                         <Link to='/guest/login' style={{ color: "#a391fc", fontSize: "14px" }}>Login</Link>
                     </div>
+
+                    { /** if errors exist */}
+                    {errors && <Alert variant='danger' className="my-3 mt-4">
+                        {Object.keys(errors).map(key => (
+                            <p key={key} className="m-1" style={{ fontSize: '12px' }}>{errors[key][0]}</p>
+                        ))}
+                    </Alert>}
+
                     <div className="form-group mt-3">
                         <label>Full Name</label>
                         <input

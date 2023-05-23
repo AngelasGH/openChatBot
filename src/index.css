@@ -40,7 +40,7 @@ label {
 }
 
 .btn-primary {
-  background-color: #a391fc !important;
+  background-color: #9e8bfc !important;
   border: 0 !important;
 }
 
@@ -50,4 +50,29 @@ label {
 
 .mytext {
   font-size: 14px;
+}
+
+/**convo*/
+
+
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  padding-left: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+li {
+  list-style: none !important;
+  text-decoration: none !important;
 }

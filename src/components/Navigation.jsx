@@ -4,10 +4,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useStateContext } from '../contexts/ContextProvider'
 import axiosClient from '../axios-client'
+import { Button } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-function Navigation({ user }) {
+function Navigation() {
 
-    const { setUser, setToken } = useStateContext()
+    const { user, messages, setUser, setToken, setMessages } = useStateContext()
 
     const onLogout = (e) => {
         e.preventDefault()
@@ -17,10 +20,22 @@ function Navigation({ user }) {
                 setToken(null)
             })
     }
+
+    const deleteConversation = () => {
+        axiosClient.delete('/conversation')
+            .then((response) => {
+                console.log(response);
+                setMessages([])
+            }).catch((err) => {
+                console.log(err)
+            })
+    }
+
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="light" sticky="top">
             <Container>
-                <Navbar.Brand href="#home" style={{ color: "#9e8bfc" }}><strong >OpenChatBot</strong></Navbar.Brand>
+                <Navbar.Brand href="/" style={{ color: "#9e8bfc" }}><strong >OpenAIChatBot</strong></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
@@ -29,10 +44,14 @@ function Navigation({ user }) {
 
                     </Nav>
                     <Nav>
-                        <Nav.Link href="#deets">Hello! {user.name}</Nav.Link>
+                        {messages.length > 0 && <Button className='mx-5' onClick={deleteConversation}>Clear Chats</Button>}
+
+                        <Nav.Link>Hello! {user.name}</Nav.Link>
+
                         <Nav.Link onClick={onLogout}>
                             Logout
                         </Nav.Link>
+
                     </Nav>
                 </Navbar.Collapse>
             </Container>

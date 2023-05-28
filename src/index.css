@@ -76,3 +76,251 @@ li {
   list-style: none !important;
   text-decoration: none !important;
 }
+
+/**
+  * Home
+*/
+
+#home span {
+  color: #826bf6;
+  text-shadow: 2px 2px 4px #b5a9f9;
+  font-weight: bold;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 50px !important;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 4px #CDC4F9;
+}
+
+.btn-sn {
+  font-size: 0.8rem;
+  font-weight: 700;
+  outline: none;
+  border: none;
+  background-color: #9e8bfc;
+  color: aliceblue;
+  padding: 8px 20px;
+  cursor: pointer;
+  position: relative;
+  text-transform: uppercase;
+  -webkit-transition-duration: 0.4s;
+  /* Safari */
+  transition-duration: 0.4s;
+  left: 600px;
+  top: 10px;
+}
+
+.btn-sn:hover {
+  background-color: #beb4ef;
+}
+
+#home {
+
+  background-color: #CDC4F9;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.position {
+  position: relative;
+  left: 0px;
+  top: -40px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+  .btn-sn {
+
+    left: 170px;
+    top: 0px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .btn-sn {
+
+    left: 225px;
+    top: 0px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+  .btn-sn {
+
+    left: 300px;
+    top: 0px;
+  }
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .btn-sn {
+
+    left: 425px;
+    top: 0px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .btn-sn {
+
+    left: 600px;
+    top: 0px;
+  }
+}
+
+/* 
+@import '~mdb-ui-kit/css/mdb.min.css'; */
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+/**
+  loader
+*/
+
+
+/* .profile-main-loader {
+  left: 50% !important;
+  margin-left: -100px;
+  position: fixed !important;
+  top: 50% !important;
+  margin-top: -100px;
+  width: 45px;
+  z-index: 9000 !important;
+} */
+
+.profile-main-loader .loader {
+  position: relative;
+  margin: 0px auto;
+  width: 50px;
+  height: 50px;
+}
+
+.profile-main-loader .loader:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.circular-loader {
+  -webkit-animation: rotate 2s linear infinite;
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  -webkit-transform-origin: center center;
+  -ms-transform-origin: center center;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: auto;
+}
+
+.loader-path {
+  stroke-dasharray: 150, 200;
+  stroke-dashoffset: -10;
+  -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
+  }
+}
+
+@-webkit-keyframes color {
+  0% {
+    stroke: '#cdc4f9';
+  }
+
+  40% {
+    stroke: '#cdc4f9';
+  }
+
+  66% {
+    stroke: '#cdc4f9';
+  }
+
+  80%,
+  90% {
+    stroke: '#cdc4f9';
+  }
+}
+
+@keyframes color {
+  0% {
+    stroke: #cdc4f9;
+  }
+
+  40% {
+    stroke: #cdc4f9;
+  }
+
+  66% {
+    stroke: #cdc4f9;
+  }
+
+  80%,
+  90% {
+    stroke: #cdc4f9;
+  }
+}

@@ -4,15 +4,14 @@ import { useStateContext } from '../contexts/ContextProvider'
 
 import Navigation from '../components/Navigation'
 import axiosClient from '../axios-client'
+import Home from '../pages/Home'
 
 function DefaultLayout() {
-    const { user, token, setUser, setToken } = useStateContext()
+    const { token, setUser, setToken } = useStateContext()
 
     if (!token) {
         return <Navigate to="/guest/login" />
     }
-
-
 
     useEffect(() => {
         axiosClient.get('/user')
@@ -23,10 +22,11 @@ function DefaultLayout() {
 
     return (
         <>
-            <Navigation user={user} />
+            <Navigation />
             <Outlet />
         </>
-    )
+    );
+
 }
 
 export default DefaultLayout

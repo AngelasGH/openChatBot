@@ -40,7 +40,7 @@ const Login = () => {
             .catch(err => {
                 const response = err.response;
                 console.log(err);
-                if (response && response.status == 422) {
+                if (response && response.status == 422) { //unprocessable entity
                     console.log(response.data.errors);
                     setErrors(response.data.errors);
                 }
@@ -51,7 +51,7 @@ const Login = () => {
         <div className="Auth-form-container">
             <form className="Auth-form" onSubmit={onSubmit}>
                 <div className="Auth-form-content">
-                    <h3 className="Auth-form-title">Sign In</h3>
+                    <h3 className="Auth-form-title">Log In</h3>
                     <div className="text-center">
                         Not registered yet?{" "}
                         {/* <span className="link-primary" onClick={changeAuthMode}>
@@ -86,7 +86,7 @@ const Login = () => {
                             placeholder="Enter password"
                         />
                     </div>
-                    <Link to='/' style={{ color: "#a391fc", fontSize: "14px" }}>Forgot Password</Link>
+                    {/* <Link to='/' style={{ color: "#a391fc", fontSize: "14px" }}>Forgot Password</Link> */}
                     <div className="d-grid gap-2 mt-5 mb-5">
                         <button type="submit" className="btn btn-primary">
                             Submit

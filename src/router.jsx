@@ -6,6 +6,9 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NotFound from './pages/NotFound'
 
+import { Navigate } from "react-router-dom"
+import Home from "./pages/Home"
+
 
 const router = createBrowserRouter([
 
@@ -14,10 +17,16 @@ const router = createBrowserRouter([
         element: <DefaultLayout />,
         children:
             [
+
                 {
-                    path: "home",
+                    path: "",
+                    element: <Home />,
+                },
+                {
+                    path: "chats",
                     element: <User />,
                 },
+
             ],
     },
     {
@@ -40,5 +49,6 @@ const router = createBrowserRouter([
         element: <NotFound />
     }
 ])
+
 
 export default router;

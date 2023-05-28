@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import router from './router.jsx'
@@ -11,6 +10,10 @@ import { ContextProvider } from './contexts/ContextProvider.jsx'
  */
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-bootstrap/dist/react-bootstrap.js';
+
+/**
+ * mdb-ui-kit
+ */
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

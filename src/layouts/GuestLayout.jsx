@@ -6,13 +6,13 @@ function GuestLayout() {
     const { token } = useStateContext()
 
     if (token) {
-        return <Navigate to="/home" />
+        return <Navigate to="/" />
     }
 
     return (
-        <>
+        <div style={{ backgroundColor: '#CDC4F9' }}>
             <Outlet />
-        </>
+        </div>
     )
 }
 

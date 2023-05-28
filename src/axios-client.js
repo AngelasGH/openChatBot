@@ -1,3 +1,7 @@
+// this is an axios instance with baseURL, and setsup request and response interceptors 
+// to handle authentication, error handling, token removal if response is unauthorized.
+
+
 import axios from "axios";
 
 const axiosClient = axios.create({
@@ -13,15 +17,18 @@ axiosClient.interceptors.request.use((config) => {
     return config;
 })
 
+//executed after response is receieved from the server
 axiosClient.interceptors.response.use((response) => {
     return response
 }, (error) => {
     const { response } = error;
-    if (response.status === 401) {
-        localStorage.removeItem('ACCESS_TOKEN')
+    if (response.status === 401) { //if an error is unauthorized. the user is not authenticated
+        localStorage.removeItem('ACCESS_TOKEN') //removes a token from localstorage with a key of "ACCESS_TOKEN" to potentially trigger a re-authentication flow.
     }
 
     throw error;
+    // if not 401 or if an error occurs during the error handling process the code throws the error again. 
+    //This ensures any errors condition or unexpected errors are propagated for futher handling.
 
     // if the response is not ok, return the error message
 })

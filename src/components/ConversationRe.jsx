@@ -17,7 +17,6 @@ import { useStateContext } from '../contexts/ContextProvider'
 components for React applications. */
 
 import { Card, Col, Container, Form, Row, Alert, Button, Modal } from 'react-bootstrap'
-import Loader from './Loader'
 
 /* These lines of code are importing the Axios library, which is a popular JavaScript library used for
 making HTTP requests from the browser. The `useState` function is also being imported from the React
@@ -39,13 +38,13 @@ function DefaultLayout() {
 
     const { user, messages, setMessages } = useStateContext()
 
-    const [errors, setErrors] = useState(null)
+    const [errors, setErrors] = useState(null);
     const [input, setInput] = useState('')
-    const [isLoading, setIsLoading] = useState(false);
-    const [show, setShow] = useState(false)
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     // const filteredMessages = messages.length > 0 && messages.filter(message => message.user_id === user.id);
     const fetchMessages = () => {
@@ -56,16 +55,13 @@ function DefaultLayout() {
                     console.log("fetch data: " + data)
                     console.log(typeof data)
                     setMessages(data)
-
                 })
                 .catch(error => {
                     console.log(error);
                     alert('Error occurred while fetching messages.');
                 });
-
-
+            // console.log("fetch messages" + response)
             // console.log(typeof response)
-
 
         } catch (error) {
             console.log(error)
@@ -77,27 +73,11 @@ function DefaultLayout() {
         e.preventDefault();
 
         try {
-            setIsLoading(true)
-
-            // create conversation history
-            let convo = '';
-            if (messages.length >= 1) {
-                messages.map((message, index) => {
-                    //console.log("messages: " + index + " " + message.user_input);
-                    convo += "user_input: " + message.user_input + "\n\n" + "ai_response: " + message.ai_response + "\n\n";
-                })
-                convo += "user_input: " + input + "\n\n" + "ai_response: ";
-            } else {
-                convo = "user_input: " + input + "\n\n" + "ai_response: ";
-            }
-
-            // console.log(convo);
-
-            axios.post(baseURL, {
+            const response = await axios.post(baseURL, {
                 model: 'text-davinci-003',
-                prompt: convo,
+                prompt: input,
                 temperature: 0.2,
-                max_tokens: 255,
+                max_tokens: 150,
                 top_p: 1,
                 frequency_penalty: 0.0,
                 presence_penalty: 0.6,
@@ -107,45 +87,40 @@ function DefaultLayout() {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + import.meta.env.VITE_APP_OPENAI_API_KEY,
                 },
-            }).then(({ data }) => {
-                setIsLoading(false)
-                console.log(data)
-                const aiResponse = data.choices[0].text;
-                console.log(aiResponse);
-                console.log(typeof aiResponse);
+            });
 
+            const aiResponse = response.data.choices[0].text;
 
+            console.log(aiResponse);
+            console.log(typeof aiResponse);
 
-                const payload = {
-                    user_input: input,
-                    ai_response: aiResponse,
-                    user_id: user.id
-                }
+            const payload = {
+                user_input: input,
+                ai_response: aiResponse,
+                user_id: user.id
+            }
 
-                console.log(payload);
+            console.log(payload);
 
-                axiosClient.post('/conversation', payload)
+            await axiosClient.post('/conversation', payload)
 
-                    .then(({ data }) => {
-                        console.log(data)
-                        fetchMessages();
-                        setInput("")
-                        setErrors(null)
-                    })
+                .then(({ data }) => {
+                    console.log(data)
+                    fetchMessages();
+                    setInput("")
+                    setErrors(null)
+                })
 
-                    .catch(err => {
-                        const response = err.response;
-                        console.log(err);
-                        if (response && response.status == 422) { //422 invalid data provided user input must be field.
-                            console.log(response.data.errors.user_input);
-                            setErrors(response.data.errors);
-                            handleShow()
+                .catch(err => {
+                    const response = err.response;
+                    console.log(err);
+                    if (response && response.status == 422) { //422 invalid data provided user input must be field.
+                        console.log(response.data.errors.user_input);
+                        setErrors(response.data.errors);
+                        handleShow()
 
-                        }
-                    })
-            })
-
-
+                    }
+                })
 
 
         } catch (error) {
@@ -154,9 +129,9 @@ function DefaultLayout() {
         }
     };
 
-    useEffect(() => {
-        fetchMessages();
-    }, [user]);
+    // useEffect(() => {
+    //     fetchMessages();
+    // }, [user]);
 
     return (
         <>
@@ -199,7 +174,7 @@ function DefaultLayout() {
 
                                     <Col md={6} lg={7} xl={8}>
 
-                                        <div style={{ height: "450px", overflowY: 'auto', backgroundColor: '#CDC4F9"' }} className="pt-3 pe-3" >
+                                        <div style={{ height: "465px", overflowY: 'auto', backgroundColor: '#CDC4F9"' }} className="pt-3 pe-3" >
 
                                             <div>
                                                 {messages.length > 0 && messages.map((message, index) => (
@@ -246,32 +221,25 @@ function DefaultLayout() {
 
                                         </div>
 
-                                        <Form onSubmit={handleSubmit} className="text-muted d-flex justify-content-start align-items-center p-3">
-
-                                            <Form.Control
-                                                as="textarea"
-                                                type="text"
-                                                className="form-control form-control-lg"
-                                                id="exampleFormControlInput2"
-                                                placeholder="Send a message."
-                                                rows={2}
-                                                value={input}
-                                                onChange={(e) => setInput(e.target.value)}
-                                            />
-
-                                            <button className="ms-3" type='submit' style={{ border: 0, backgroundColor: 'white' }} disabled={isLoading}>
-                                                {isLoading ? (
-                                                    <Loader style={{ width: "200px", height: "200px" }} />
-                                                ) : (
+                                        <Form onSubmit={handleSubmit}>
+                                            <div className="text-muted d-flex justify-content-start align-items-center pe-3 pt-3 mt-2 mx-4 mb-4">
+                                                <input
+                                                    type="text"
+                                                    className="form-control form-control-lg"
+                                                    id="exampleFormControlInput2"
+                                                    placeholder="Send a message."
+                                                    value={input}
+                                                    onChange={(e) => setInput(e.target.value)}
+                                                />
+                                                style={{ height: '100px' }}
+                                                <button className="ms-3" type='submit' style={{ border: 0, backgroundColor: 'white' }}>
                                                     <img
                                                         src={paperPlane}
                                                         alt="avatar 3"
-                                                        style={{ width: "40px", height: "40px" }}
+                                                        style={{ width: "40px", height: "100%" }}
                                                     />
-                                                    // <span style={{ width: "20px", height: "20px" }}>Send</span>
-                                                )}
-                                            </button>
-
+                                                </button>
+                                            </div>
                                         </Form>
 
 

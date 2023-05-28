@@ -69,7 +69,7 @@ function DefaultLayout() {
 
         } catch (error) {
             console.log(error)
-            alert('Error occurred while fetching messages.')
+            alert('Error occurred while fetching messages....')
         }
     }
 
@@ -143,6 +143,8 @@ function DefaultLayout() {
 
                         }
                     })
+            }).catch(err => {
+                console.log(err)
             })
 
 

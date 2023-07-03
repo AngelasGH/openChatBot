@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import { Alert } from "react-bootstrap";
+import Loader from "../components/Loader";
 
 const Signup = () => {
     const nameRef = useRef();
@@ -11,11 +12,12 @@ const Signup = () => {
     const passwordConfirmationRef = useRef();
 
     const [errors, setErrors] = useState(null);
-
+    const [isLoading, setIsLoading] = useState(false);
     const { setUser, setToken } = useStateContext();
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setIsLoading(true)
         const payload = {
             name: nameRef.current.value,
             email: emailRef.current.value,
@@ -36,9 +38,11 @@ const Signup = () => {
             .then(({ data }) => {
                 setUser(data.user)
                 setToken(data.token)
+                setIsLoading(false)
             })
 
             .catch(err => {
+                setIsLoading(false)
                 const response = err.response;
                 console.log(err);
                 if (response && response.status == 422) { //unprocessable entity
@@ -108,8 +112,9 @@ const Signup = () => {
                     </div>
                     {/* <Link className="text-start mt-2 mb-5" to='/' style={{ color: "#a391fc", fontSize: "14px" }}>Forgot password</Link> */}
                     <div className="d-grid gap-2 mt-5 mb-5">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
+                        <button type="submit" className="btn btn-primary" disabled={isLoading}>
+                            {isLoading ? (<Loader />) : "Submit"}
+
                         </button>
                     </div>
 

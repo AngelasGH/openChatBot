@@ -207,8 +207,8 @@ body {
 .profile-main-loader .loader {
   position: relative;
   margin: 0px auto;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 }
 
 .profile-main-loader .loader:before {
@@ -308,19 +308,19 @@ body {
 
 @keyframes color {
   0% {
-    stroke: #cdc4f9;
+    stroke: '#cdc4f9';
   }
 
   40% {
-    stroke: #cdc4f9;
+    stroke: '#cdc4f9';
   }
 
   66% {
-    stroke: #cdc4f9;
+    stroke: '#cdc4f9';
   }
 
   80%,
   90% {
-    stroke: #cdc4f9;
+    stroke: '#cdc4f9';
   }
 }

@@ -33,7 +33,7 @@ import axiosClient from '../axios-client'
 
 
 const baseURL = 'https://api.openai.com/v1/completions'
-const laravelBaseURL = 'http://backend.test/api/conversation'
+// const laravelBaseURL = 'http://backend.test/api/conversation'
 
 function DefaultLayout() {
 
@@ -46,10 +46,17 @@ function DefaultLayout() {
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
+    const messagesContainerRef = useRef(null);
 
+    const scrollToBottom = () => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTo(0, messagesContainerRef.current.scrollHeight);
+        }
+    }
     // const filteredMessages = messages.length > 0 && messages.filter(message => message.user_id === user.id);
     const fetchMessages = () => {
         try {
+
             // fetch messages from the database
             axiosClient.get('/conversation')
                 .then(({ data }) => {
@@ -91,13 +98,15 @@ function DefaultLayout() {
                 convo = "user_input: " + input + "\n\n" + "ai_response: ";
             }
 
-            // console.log(convo);
+            console.log(convo);
 
             axios.post(baseURL, {
                 model: 'text-davinci-003',
                 prompt: convo,
                 temperature: 0.2,
-                max_tokens: 255,
+                /* It sets the maximum URL live tre url you are live request -- library for accessing API CSproject express js
+                number of tokens allowed in the code to 255. Odin project toun javascript node*/
+                max_tokens: 500,
                 top_p: 1,
                 frequency_penalty: 0.0,
                 presence_penalty: 0.6,
@@ -129,6 +138,7 @@ function DefaultLayout() {
                     .then(({ data }) => {
                         console.log(data)
                         fetchMessages();
+
                         setInput("")
                         setErrors(null)
                     })
@@ -137,28 +147,41 @@ function DefaultLayout() {
                         const response = err.response;
                         console.log(err);
                         if (response && response.status == 422) { //422 invalid data provided user input must be field.
-                            console.log(response.data.errors.user_input);
-                            setErrors(response.data.errors);
+                            console.log(response.data.errors.user_input)
+                            setErrors(response.data.errors)
                             handleShow()
 
+                        } else {
+                            alert("Error: " + err)
                         }
+
                     })
-            }).catch(err => {
-                console.log(err)
             })
+
+                .catch(err => {
+                    setIsLoading(false)
+                    console.log("401" + err)
+                    alert("Error: " + err)
+                })
 
 
 
 
         } catch (error) {
             console.log(error);
-            alert('Error occurred while fetching data.');
+            alert('Error occurred while fetching data....');
         }
     };
+
+
 
     useEffect(() => {
         fetchMessages();
     }, [user]);
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages]);
 
     return (
         <>
@@ -201,9 +224,9 @@ function DefaultLayout() {
 
                                     <Col md={6} lg={7} xl={8}>
 
-                                        <div style={{ height: "450px", overflowY: 'auto', backgroundColor: '#CDC4F9"' }} className="pt-3 pe-3" >
+                                        <div style={{ height: "479px", overflowY: 'auto', backgroundColor: '#CDC4F9"' }} className="pt-3 pe-3" >
 
-                                            <div>
+                                            <div ref={messagesContainerRef} style={{ overflowY: 'auto', height: '400px' }}>
                                                 {messages.length > 0 && messages.map((message, index) => (
                                                     <div key={index}>
                                                         <div className="d-flex flex-row justify-content-start mt-4">
@@ -248,31 +271,32 @@ function DefaultLayout() {
 
                                         </div>
 
-                                        <Form onSubmit={handleSubmit} className="text-muted d-flex justify-content-start align-items-center p-3">
+                                        <Form onSubmit={handleSubmit} >
 
-                                            <Form.Control
-                                                as="textarea"
-                                                type="text"
-                                                className="form-control form-control-lg"
-                                                id="exampleFormControlInput2"
-                                                placeholder="Send a message."
-                                                rows={2}
-                                                value={input}
-                                                onChange={(e) => setInput(e.target.value)}
-                                            />
+                                            <Container className="text-muted d-flex justify-content-start align-items-center p-3">
+                                                <input
+                                                    type="text"
+                                                    className="form-control form-control-lg"
+                                                    id="exampleFormControlInput2"
+                                                    placeholder="Send a message."
+                                                    rows={2}
+                                                    value={input}
+                                                    onChange={(e) => setInput(e.target.value)}
+                                                />
 
-                                            <button className="ms-3" type='submit' style={{ border: 0, backgroundColor: 'white' }} disabled={isLoading}>
-                                                {isLoading ? (
-                                                    <Loader style={{ width: "200px", height: "200px" }} />
-                                                ) : (
-                                                    <img
-                                                        src={paperPlane}
-                                                        alt="avatar 3"
-                                                        style={{ width: "40px", height: "40px" }}
-                                                    />
-                                                    // <span style={{ width: "20px", height: "20px" }}>Send</span>
-                                                )}
-                                            </button>
+                                                <button className="ms-3" type='submit' style={{ border: 0, backgroundColor: 'white' }} disabled={isLoading}>
+                                                    {isLoading ? (
+                                                        <Loader />
+                                                    ) : (
+                                                        <img
+                                                            src={paperPlane}
+                                                            alt="avatar 3"
+                                                            style={{ width: "40px", height: "40px" }}
+                                                        />
+                                                        // <span style={{ width: "20px", height: "20px" }}>Send</span>
+                                                    )}
+                                                </button>
+                                            </Container>
 
                                         </Form>
 

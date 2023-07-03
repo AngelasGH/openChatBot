@@ -7,7 +7,7 @@ import axiosClient from '../axios-client'
 import Home from '../pages/Home'
 
 function DefaultLayout() {
-    const { token, setUser, setToken } = useStateContext()
+    const { token, setUser } = useStateContext()
 
     if (!token) {
         return <Navigate to="/guest/login" />
